@@ -1,0 +1,74 @@
+<?php
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/*
+ *this function will be called for every form to run this for specific form we will need form id
+ * so we can use krumo to find the form id and then apply switch or if to perform
+ *  
+ */
+function pass_form_alter(&$form, &$form_state, $form_id)
+    
+{
+krumo($form);
+if($form_id=='user_profile_form')
+{
+  
+  
+  $form['account']['pass']['#description']=t('Enter more secured password');
+  krumo($form);
+}
+  
+}
+/*
+ * but hook_form_alter will be called on every form page butwe dont need that we need to call form _alter on specific form id pages thus
+ * we can use hook_fomr_formid_alter
+ * 
+ *  
+ */
+function pass_form_user_register_form_alter(&$form, &$form_state, $form_id)
+{
+  //krumo($form);
+$form['account']['name']['#description']=t('Please dont enter password');
+
+  
+   $form ['firstname'] = array(
+    '#type' => 'textfield',
+     '#title'=>'First Name',
+     '#description'=>'Ener your First name in Capitals'
+   
+  );
+   $form ['lastname'] = array(
+    '#type' => 'textfield',
+   '#title'=>'Last Name',
+  );
+  
+  $form ['password'] = array(
+    '#type' => 'password_confirm',
+   
+  );
+  
+  $form ['terms_of_use'] = array(
+    '#type' => 'checkbox',
+    '#title' => t("I agree with the website's terms and conditions."),
+    '#required' => TRUE,
+  );
+    
+  $form['#validate'][]='pass_validate_password';
+
+}
+function pass_validate_password($form, &$form_state)
+{
+  if($form_state['values']['password'] == 'password')
+  
+  {
+
+    echo "hiiii";
+    die;
+  }
+  
+}

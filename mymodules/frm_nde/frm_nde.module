@@ -1,0 +1,50 @@
+<?php
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+function frm_nde_menu()
+{
+  $items=array();
+  $items['nte']=array(
+    'title'=> 'create a node form',
+    'page callback'=>'drupal_get_form',
+    'page arguments'=>array('frm_nde_crt'),
+     'access callback'=>TRUE,
+    'access_arguments'=>array('access content'),  
+    'file'=>'frm2.inc',
+     'type' => MENU_NORMAL_ITEM,  
+    
+  );
+
+  return $items;
+}
+
+//function node_example_form($node, $form_state) {
+//  return node_content_form($node, $form_state);
+//}
+
+function frm_nde_page(){
+   $renderable_array = array();
+  // We query the database and find all of the nodes for the type we defined.
+  $sql = 'SELECT nid FROM {node} n WHERE n.type = :type AND n.status = :status';
+  $result = db_query($sql,
+    array(
+      ':type' => 'node1',
+      ':status' => 1,
+    )
+  );
+  $renderable_array['explanation'] = array(
+    '#markup' => t("Node Example nodes you've created will be displayed here. Note that the color fields will be displayed differently in this list, than if you view the node normally. Click on the node title to see the difference. This is a result of using our 'example_node_list' node view type."),
+  );
+  
+    foreach ($result as $row) {
+    $node = node_load($row->nid);
+    $renderable_array['node_list'][] = node_view($node, 'example_node_list');
+  }
+  return $renderable_array;
+  
+}

@@ -1,0 +1,3 @@
+name=binfo
+description=retrieve and show block values from database 
+core=7.x

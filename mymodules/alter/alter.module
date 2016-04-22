@@ -1,0 +1,61 @@
+<?php
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+function alter_form_alter(&$form, &$form_state, $form_id) {
+  
+  //
+  
+  
+//  if($form_id == 'page_node_form')
+//  {
+//    echo "ankit here!";
+//    echo"<pre>";
+//    print_r($form); die;
+//  }
+    
+  
+  
+   // pretty print array using Krumo to messages
+}
+function alter_page_alter(&$page){
+  //print_r($page);
+  //
+  //die;
+ // krumo($page);
+  if(arg(0)=='magic')
+  {
+    echo"namit11111";
+    $page['content']['system_main']['renderable_array']['#type']='ol';
+   // $page['content']['system_main']['renderable_array']['item']['name1']['value']='akshit';
+     $page['sidebar_first']['#sorted'] = FALSE;
+
+    // We are on a node detail page. Append a standard disclaimer to the
+   // content region.
+  $page['sidebar_first']['disclaimer'] = array(
+    '#markup' => t('Acme, Inc. is not responsible for the contents of this sample code.'), 
+    '#weight' => 25,
+  );
+  }
+}
+
+
+//function alter_page_build(&$page) {
+//  if (menu_get_object('node', 1)) {
+//    
+  //$page['sidebar_first']['#sorted'] = FALSE;
+
+    // We are on a node detail page. Append a standard disclaimer to the
+   // content region.
+ // $page['sidebar_first']['disclaimer'] = array(
+  //  '#markup' => t('Acme, Inc. is not responsible for the contents of this sample code.'), 
+   // '#weight' => 25,
+ // );
+ //}
+//}
+
+

@@ -1,0 +1,45 @@
+<?php
+
+function gallery_alias_install() {
+$vocab_default_name=serialize('gallery');
+$alias_default_prefix=serialize('before-after/');
+//  db_insert('variable')
+//    ->fields(array(
+//      'name' =>'alias_gallery_name',
+//      'value' => $vocab_name,
+//  
+//      ))
+//    ->execute();
+//  db_insert('variable')
+//    ->fields(array(
+//      'name' =>'alias_gallery_prefix',
+//      'value' =>$alias_prefix,
+//        ))
+//    ->execute();
+//  
+
+  
+   db_merge('variable')
+  ->key(array('name' =>'alias_gallery_name'))
+  ->updateFields(array( 
+    'value' => $vocab_default_name,
+          ))
+      ->insertFields(array(
+     'name'=> 'alias_gallery_name',
+    'value' => $vocab_default_name,
+  ))
+      ->execute();
+   
+   
+     db_merge('variable')
+  ->key(array('name' =>'alias_gallery_prefix'))
+  ->updateFields(array( 
+    'value' => $alias_default_prefix,
+          ))
+      ->insertFields(array(
+     'name'=> 'alias_gallery_prefix',
+    'value' => $alias_default_prefix,
+  ))
+    ->execute();
+    
+}

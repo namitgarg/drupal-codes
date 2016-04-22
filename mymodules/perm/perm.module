@@ -1,0 +1,55 @@
+<?php
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+function perm_permission()
+{
+  $items=array();
+ 
+    $items['employee_permission']=array(
+      'title'=>'employee',
+      'description' =>'to give employees some permission to perform daily tasks',
+      
+      
+    
+    
+  );
+  return $items;
+}
+
+function perm_menu()
+{
+  $items=array();
+  $items['siddhant']=array(
+    'title'=>'access_siddhant',
+    'page callback' => 'perm_page_basic',
+    //'access callback'=> TRUE,
+    'access arguments'=>array('employee_permission'),
+    // 'access arguments' => array('access content'),  
+  );
+  
+  return $items;
+  
+}
+
+
+function perm_page_basic()
+{
+  $dis='<b>'."hiiiiiiiihiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii".'</b>';
+     $dis.='<p>'."hiiiiiiiihiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii".'</p>';
+       $dis.='<p>'."hiiiiiiiihiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii".'</p>';
+        $dis.='<p>'."hiiiiiiiihiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii".'</p>';
+        $dis.='<p>'."hiiiiiiiihiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii".'</p>';
+         $dis.='<p>'."hiiiiiiiihiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii".'</p>';
+         $dis.='<p>'."hiiiiiiiihiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii".'</p>';
+        $dis.='<p>'."hiiiiiiiihiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii".'</p>';
+       $dis.='<p>'."hiiiiiiiihiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii".'</p>';
+         $dis.='<p>'."hiiiiiiiihiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii".'</p>';
+           $dis.='<p>'."hiiiiiiiihiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii".'</p>';
+             $dis.='<p>'."hiiiiiiiihiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii".'</p>';
+      
+      return $dis;
+}

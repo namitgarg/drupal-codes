@@ -1,0 +1,68 @@
+<?php
+
+function gallery_alias_menu() {
+
+  $items['admin/before-after-setting/alias'] = array(
+    'title callback' => 'Add URl Alias',
+    'title' => 'Gallery Alias',
+    'description' => 'Add alias to before-after gallery terms with special characters',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('gallery_alias_form'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer users'),
+    'file' => 'gallery_alias_admin.inc',
+    'type' => MENU_LOCAL_TASK,
+  );
+  return $items;
+}
+
+function gallery_alias_taxonomy_term_presave($term) {
+  $query = db_select('variable', 'vb')
+      ->fields('vb', array('name','value'));
+   $results = $query->execute()->fetchAll();
+   foreach ($results as $values)
+   {
+     $dbname=$values->name;
+         $dbvalue->value;
+   }
+   print_r($results);
+   die;
+  $intial_term_name = $term->name;
+  $term_name = $term->name;
+  $vocab_name = $term->vocabulary_machine_name;
+  if ($vocab_name == 'gallery') {
+
+    if (preg_match('![^a-z0-9]!i', $term_name)) {
+
+      if (!empty($term->original->name)) {
+        $previous_term_name = $term->original->name;
+        $conditions = array('alias' => 'before-after/' . $previous_term_name);
+        $criteria = path_load($conditions)[pid];
+        $criteria = array('pid' => $criteria);
+        path_delete($criteria);
+      }
+      $term_name = preg_replace('/[^a-zA-Z0-9\']/', '-', $term_name);
+      while (preg_match('/--/', $term_name)) {
+        $term_name = preg_replace('/--/', '-', $term_name);
+      }
+      $term_name = rtrim($term_name, "-");
+      $path = array('source' => 'before-after/' . $intial_term_name, 'alias' => 'before-after/' . $term_name);
+      path_save($path);
+    }
+  }
+}
+
+function gallery_alias_taxonomy_term_delete($term) {
+  $vocab_name = $term->vocabulary_machine_name;
+  if ($vocab_name == 'gallery') {
+    $term_name = $term->name;
+    if (preg_match('![^a-z0-9]!i', $term_name)) {
+
+      $actions = 'before-after/' . $term_name;
+      $conditions = array('source' => 'before-after/' . $term_name);
+      $criteria = path_load($conditions)[pid];
+      $criteria = array('pid' => $criteria);
+      path_delete($criteria);
+    }
+  }
+}

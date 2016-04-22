@@ -1,0 +1,3 @@
+name=dbmodule
+description=retrive values from database	
+core=7.x

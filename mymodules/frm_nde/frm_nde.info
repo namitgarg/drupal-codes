@@ -1,0 +1,3 @@
+name=frm_nde
+    description=to createa node when a form submits
+    core=7.x

@@ -1,0 +1,12 @@
+<?php
+
+
+function render_page_alter(&$page)
+{
+ //  echo "namit1111";
+  //if(arg(0) == 'magic')
+ // {
+   dsm($page['content']);
+    
+  //}
+}

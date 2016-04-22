@@ -1,0 +1,158 @@
+<?php
+/*
+*Implement hook_menu
+*/
+function mymenu_menu() {
+	//$items=array();
+	$items['magic'] =array(
+	'title' => 'My Menu Title',
+	'page callback' => 'mymenu_basic',
+	//'access callback' => 'user_access',
+	'access arguments' => array('access magic content'),
+		);
+  
+  $items['wildmagic/%/%'] =array(
+	'title' => 'My  Wildcard Menu Title',
+	'page callback' => 'mymenu_wild',
+  //'page arguments' => array(1),
+    'page arguments' => array(1,2),
+	'access arguments' => array('access content'),
+  'file' => 'mymenu_wild.inc',
+		);
+  
+  $items['user/%/magic'] =array(
+	'title' => 'Username menu',
+    'description'=>'description of the menu pf user',
+	  'page callback' => 'mymenu_usertab',
+    'page arguments' => array(1),
+    'access callback' => 'user_access',
+	   'access arguments' => array('administer users'),
+    'file' => 'mymenu_tab.inc',
+    'type' => MENU_LOCAL_TASK,
+		);
+	$items['node/%node/magic']=array(
+    'title'=>'MAGIC',
+    'description' =>'perform invert operations',
+    'page callback' => 'mymenu_node_magic',
+    'page arguments' => array(1),
+    'access arguments' => array('access content'),
+    'file'=>'mymenu_magic.inc',
+    'type' =>  MENU_LOCAL_TASK,
+    'context' => MENU_CONTEXT_INLINE | MENU_CONTEXT_PAGE,
+      
+  );
+	return $items;
+  
+  }
+  
+ 
+/*
+ * This will show the text in markup in the /magic page
+ */
+
+function mymenu_basic()
+{
+
+$content =array();
+$content['raw_markup'] = array(
+'#type' => 'markup',
+'#markup' => '<p>'.t("my own menu  text you have to include all text in the markup of your whole block").'</p>',
+'#prefix' => '<h1>'.t("hiii").'</h1>',
+ '#suffix' => '<h2>'.t("bye").'</h2>',
+
+	);
+$variables=array(
+//  'path'=>'https://www.google.co.in/images/srpr/logo11w.png',
+ 'path'=>'/drupal2/sites/default/files/Koala.jpg',
+  'alt' =>t('this is  a pic by module'),
+  'title'=> t('My module image'),
+  'height'=>150,
+  'width'=>250,
+  
+  
+);
+$content['themed_date']=array(
+  '#type' => 'markup',
+  '#markup' =>theme('image',$variables),
+  '#prefix' =>'<div class ="menu-magic-image">',
+  '#suffix' => '</div>',
+  '#attached' => array(
+     'css' => array(
+       drupal_get_path('module','mymenu').'/mymenu_css.css',
+     ),
+   ),
+);
+ // $mypath=drupal_get_path('module','mymenu').'/mymenu_css.css';
+  //echo $mypath;
+$content['renderable_array'] = array(
+  '#theme'=> 'item_list',
+  '#title' => t('name of friends'),
+  '#items' => array(
+    'name1'=>t("nishant"),
+    'name2'=>t("palash"),
+    'name3'=>t("ayush"),
+    'time' => t('The current time is %time',array('%time'=>date('r'))),
+     ),
+   //'#cache' => array(
+    // 'keys' => array('my_menu','renderable_array'),
+     //'bin' => 'cache',
+     //'expire' => time() + 30,
+     //'granularity' =>DRUPAL_CACHE_PER_PAGE
+  // ),
+  
+);
+	return $content;
+
+	
+	
+}
+function mymenu_block_info()
+{
+	$blocks['my_own_block']=array(
+	'info' => t('this appears in structures=>blocks'),
+	'status' => TRUE,
+	'region' => 'sidebar_first',
+    'pages'=>''
+
+	);
+	$blocks['my_second_block']=array(
+	'info' => t('MY second BLOCK Second'),
+	'status' => TRUE,
+	'region' => 'sidebar_first',
+
+	);
+	
+	return $blocks;	
+	
+}
+function mymenu_block_view($delta)
+{
+	//echo"namit"; die;
+	$block=array();
+	switch($delta)
+	{
+		case 'my_own_block':
+		$block['subject']=t('Title of My block');
+		//$block['content']=array(
+		//'#type' => 'markup',
+		//'#markup' => '<p>'.t("my content text").'</p>',
+		//);
+		$block['content']=t("My custom block text is writtten here ");
+		break;
+		
+		case 'my_second_block':
+		$block['subject']=t('New Title 2 ');
+		
+		$block['content']=mymenu_contents($delta);
+		break;
+	}
+	return $block;
+}
+function mymenu_contents($bk)
+{
+if($bk == 'my_second block')	
+{
+  $text1="helllo title 2";
+  return $text1;
+}
+}

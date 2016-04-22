@@ -1,0 +1,20 @@
+Difference between preg_match and preg_match_all
+preg_match stops looking after the first match. preg_match_all, on the other hand, continues to look until it finishes processing the entire string. Once match is found, it uses the remainder of the string to try and apply another match
+
+http://www.w3schools.com/php/php_form_url_email.asp
+
+
+To perform insensitive search exact match
+preg_match("/\b$searchword\b/i", $match_field, $matches);
+to perform match exact word
+  preg_match("/\b$searchword\b/", $match_field, $matches);
+    
+  if(empty($matches))
+  {
+  }
+  
+  
+  
+  
+  Replace
+        $replace_result = preg_replace("/\b$searchword\b/i", $replaceword, $meta_list);

@@ -1,0 +1,22 @@
+<?php
+
+/* 
+* Implements hook_permisson()
+*/
+
+function demo_help($path, $arg) {
+
+  switch ($path) {
+    case "admin/help#demo":
+      return '<p>' . t("Displays links to nodes created on this date") . '</p>';
+      break;
+	  case "admin/structure/block":
+	  return '<h1>' .t("my second help text in demo module") . '</h1>';
+	  break;
+  }
+
+}
+/* 
+* 
+Block module
+*/

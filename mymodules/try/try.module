@@ -1,0 +1,38 @@
+<?php
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+function try_menu()
+{
+  $item=array();
+  $item['mytable/%']=array(
+    'title' =>"TABLE",
+    'page callback'=>'try_table',
+    'page arguments'=>array(1),
+    'access callback'=>'user_access',
+    'access arguments'=>array('administer users'),
+           
+  );
+  return $item;
+}
+function try_table($wild)
+{
+  $var="<p style='color:red;font-size:30'>Your Table</br>";
+  for($i=1;$i<11;$i++)
+  {
+   $num=$i*$wild;
+ $var .= "$wild * $i =".$num.'</br>';
+  }
+  $var.="</p>";
+
+  
+  $value=array(
+    '#type'=>'markup',
+    '#markup'=>$var,
+  );
+  return $value;
+}
+

@@ -1,0 +1,76 @@
+<?php
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+function spinfo_menu()
+{
+  $items=array();
+  $items['node/%node/spinfo']=array(
+    'title'=>'spy_info',
+    'description'=> 'theme change',
+    'page callback' => 'spinfo_page',
+    'page arguments' => array(1),
+    'acess callback'=>'node_access',
+    'access argument' => array('view',1),
+    'type' => MENU_LOCAL_TASK,
+    'context' => MENU_CONTEXT_INLINE | MENU_CONTEXT_PAGE,
+    
+    
+  );
+  
+  return $items;
+   
+}
+
+
+function spy_info_theme()
+{
+  return array(
+    'spinfo_item' => array(
+      'variables' => array('item'=>NULL),
+    ),
+  );
+}
+
+
+function spinfo_page($node)
+{
+  $information=spinfo_data($node);
+  $content=array();
+  foreach($information as $item)
+  {
+    $content[]=array(
+      '#type' => 'markup',
+      '#markup' => theme('spinfo_item',$item),
+                 // we can call like this also Theme_spy_glass_item ($item) 
+                   //but this declaation will give oppurtunity so that other modules and themes can over write the function
+      
+    );
+  }
+  return $content;
+}
+function theme_spinfo_item($variables)
+{
+  // the spy_info_item is the name of hook used in _theme function
+  $output = '<p>';
+  $output .= '<strong>'.$variables['title'].'</strong>';
+  $output .= $variables['data'];
+  $output .= '</p>';
+  return $output;
+}
+function spinfo_data($node)
+{
+  $informaton=array();
+  $information[]=array(
+    'title' => t('TITLE CHARACTER COUNT'),
+    'data' => t('there are characters in the '),
+  
+  );
+  $information[] =array(
+    'title' =>t('HASH'),
+    'data' => md5($node->title),
+  );
+}

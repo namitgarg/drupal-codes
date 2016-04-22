@@ -1,0 +1,4 @@
+name=gallery_alias
+description=Add Automatic Alias when a Gallery Term with special character is created
+core=7.x
+dependencies[] = pathauto

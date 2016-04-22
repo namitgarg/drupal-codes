@@ -1,0 +1,39 @@
+<?php
+function forma_schema()
+{
+$schema['forma_table']=array(
+'description'=>t('the table for cake or pie '),
+  'fields' =>array(
+    'username'=>array(
+      'description'=>t('unique id of the user'),
+      'type'=>'varchar',
+      'length'=>50,
+      'not null'=>TRUE,
+         ),
+    'password'=>array(
+      'description'=>t('stores password in encrypted form'),
+      'type'=>'varchar',
+      'length'=>40,
+      'not null'=>TRUE,
+    ),
+    'name'=>array(
+      'description'=>t('name'),
+      'type'=>'varchar',
+      'length'=>40,
+    ),
+'gender'=>array(
+  'description'=>t('Enter your sex'),
+  'type'=>'varchar',
+  'length'=> 20,
+  
+),
+    
+  ),//fields array ends here
+  
+  
+      'primary key' => array('username'),
+);
+ return $schema;
+}
+
+

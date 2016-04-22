@@ -1,0 +1,71 @@
+ticket list
+https://docs.google.com/spreadsheets/d/1EQD-gpqqsY6o9Si2GzKV7QKth0m4rIFujk3q6jGvNes/edit?pli=1#gid=211402126
+
+
+Server 1- This is the Development server where buildout sites are present:
+Host: 74.121.195.13
+User: page1dev
+Password: P3aceL0ve
+
+Server 2- On this server there are D6 sites also few D7 sites are there:
+Host: 74.121.195.10
+User: page1global
+Password: P3aceL0ve
+
+Server 3- Only D7 sites are there:
+Host: 74.121.195.14
+User: page1live
+Password: P3aceL0ve
+
+FormSite Access - 
+URLS
+https://fs21.formsite.com/page1solutions2/login.html 
+https://fs21.formsite.com/itpage1solutionscom/login.html
+https://fs24.formsite.com/page1solutions3/login.html
+
+UserName For all Above URLS – design@page1solutions.com
+Password For all Above URLS – hamsterDance
+
+http://dev.vandorncurtiss.blackmesh.page1solutions.com/
+https://page1solutions.quickbase.com
+ https://docs.google.com/spreadsheets/d/1nXrJ0-DWXAFXkDDZyie49G86XYrbdz0Ky6Fd3RNkU6o/edit#gid=0
+
+QT SHEEt
+https://docs.google.com/spreadsheets/d/1nXrJ0-DWXAFXkDDZyie49G86XYrbdz0Ky6Fd3RNkU6o/edit#gid=0
+
+developer queue
+https://docs.google.com/spreadsheets/d/1tgVnn5OGA0Y6LALYHvu9ht6TWmN1q8i3jCqM3b_jpjc/edit#gid=0
+
+Drupal Admin:
+username: Page 1 Solutions
+password:  T0werFR@nk66
+FArm878mAGGie
+
+VPN credentials: 
+
+ UserName: ankit_k
+ Password: Kelltonvpn1!
+
+
+Globan vpn sonic wall
+page1solutions.local\KelltonDevelopment
+M@ke1tHapen
+
+https://page1solutions.quickbase.com
+[7/10/2015 2:29:21 PM] deepak jain: deepakj@page1solutions.com
+[7/10/2015 2:29:24 PM] deepak jain: admin123
+
+ticket 
+https://docs.google.com/spreadsheets/d/1EQD-gpqqsY6o9Si2GzKV7QKth0m4rIFujk3q6jGvNes/edit?pli=1#gid=1633646960
+
+staybacke
+https://docs.google.com/spreadsheets/d/1ElV-c2Et8gRIavqwKY5qE49Yrqr0YdZE8HMMc6OlDSk/edit#gid=0
+add this username and password
+sarad@page1solutions.com
+100Acrewoods
+
+login credentials for team
+https://docs.google.com/spreadsheets/d/1y1aclB99HSaWtfL1wMZ9tqYfw2Op34CmVFWavS5Q_MQ/edit?pli=1#gid=0
+
+
+formsite https://docs.google.com/spreadsheets/d/1GmVKdNcESmQ7DKlXLpec8xYEVm6SvgUXPObwjEuM3Q0/edit?pli=1#gid=0
