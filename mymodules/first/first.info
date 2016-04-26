@@ -1,5 +1,0 @@
-name = first
-description = this is the demo module for hook_help() & hook_block_info() & hook_block_view()
-core = 7.x
-package = Drupal Development        
-
