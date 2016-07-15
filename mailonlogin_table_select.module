@@ -1,0 +1,143 @@
+<?php
+/**
+ * @file
+ * Send an email to admin after any user logged into website.
+ */
+
+/**
+ * Register a configuration page path.
+ */
+function mailonlogin_menu() {
+
+  $items = array();
+
+  $items['admin/settings/mailonlogin'] = array(
+    'title' => 'Mail on login setting page',
+    'description' => 'Select users after their login each time mail will raise to admin.',
+    'page callback' => 'drupal_get_form',
+    //'page callback' => 'mailonlogin_form',
+    'page arguments' => array('mailonlogin_admin'),
+    'access arguments' => array('administer mailonlogin settings'),
+    'type' => MENU_NORMAL_ITEM,
+   );
+
+  return $items;
+}
+
+
+/**
+ * Get list of users.
+ */
+function mailonlogin_admin($form, &$form_state) {
+
+  $header = array(
+    'username' => array('data' => t('Username'), 'field' => 'u.name'),
+    'mail' => array('data' => t('Email'), 'field' => 'u.mail'),
+    'status' => array('data' => t('Status'), 'field' => 'u.status'),
+    'roles' => array('data' => t('Roles')),
+    'access' => array('data' => t('Last access'), 'field' => 'u.access'),
+  );
+
+  $query = db_select('users', 'u');
+  $query->condition('u.uid', 0, '<>');
+  user_build_filter_query($query);
+
+  $count_query = clone $query;
+  $count_query->addExpression('COUNT(u.uid)');
+
+  $query = $query->extend('PagerDefault')->extend('TableSort');
+  $query
+    ->fields('u', array('uid', 'name', 'mail', 'status', 'access'))
+    ->limit(50)
+    ->orderByHeader($header)
+    ->setCountQuery($count_query);
+    $result = $query->execute();
+
+
+  $form['options'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Set users for their login notifications '),
+    '#attributes' => array('class' => array('container-inline')),
+  );
+
+  $form['options']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Update'),
+  );
+
+  $status = array(t('blocked'), t('active'));
+  $roles = array_map('check_plain', user_roles(TRUE));
+  $accounts = array();
+  foreach ($result as $account) {
+    $users_roles = array();
+    $roles_result = db_query('SELECT rid FROM {users_roles} WHERE uid = :uid', array(':uid' => $account->uid));
+    foreach ($roles_result as $user_role) {
+      $users_roles[] = $roles[$user_role->rid];
+    }
+    asort($users_roles);
+
+ $options[$account->uid] = array(
+      'username' => theme('username', array('account' => $account)),
+       'mail'  => $account->mail ? t($account->mail) : t('Email not updated'),
+      'status' =>  $status[$account->status],
+      'roles' => theme('item_list', array('items' => $users_roles)),
+      'access' =>  $account->access ? t('@time ago', array('@time' => format_interval(REQUEST_TIME - $account->access))) : t('never'),
+    );
+  }
+
+  $form['accounts'] = array(
+    '#type' => 'tableselect',
+    '#header' => $header,
+    '#options' => $options,
+    '#empty' => t('No people available.'),
+  );
+  $form['pager'] = array('#markup' => theme('pager'));
+  return $form;
+
+}
+
+function mailonlogin_admin_submit($form_id, &$form_state) {
+print_r($form_id);
+exit();
+
+}
+
+/**
+ * Implements hook_user_login().
+ */
+function mailonlogin_user_login(&$edit, $account) {
+  // If the user has a NULL time zone, notify them to set a time zone.
+  /*
+   *if (!$user->timezone && variable_get('configurable_timezones', 1) && variable_get('empty_timezone_message', 0)) {
+   *  drupal_set_message(t('Configure your <a href="@user-edit">account time zone setting</a>.', array('@user-edit' => url("user/$user->uid/edit", array('query' => drupal_get_destination(), 'fragment' => 'edit-timezone')))));
+   *}
+   */
+  /* Your code here */
+ $log_uid = $account->uid;
+ $params['username'] = $account->name;
+ $params['mail'] = $account->mail;
+ $params['logintime'] = $account->login;
+ $adminmail = variable_get('site_mail');
+ $site_name =  variable_get('site_name');
+ $sendmail =  drupal_mail('mailonlogin', 'loggedin', $adminmail, language_default(), $params);
+if($sendmail){
+  drupal_set_message("mail has been sent.");
+} else {
+  drupal_set_message("Failed in sending mail.");
+ }
+
+/*
+** Implements hook_mail().
+*/
+function mailonlogin_mail($key, &$message, $params) {
+    switch($key) {
+        case 'loggedin':
+            $message['subject'] = t("New user logged into $site_name");
+            $message['body'][] = t('Hi ');
+            $message['body'][] = t('New user logged in site');
+            $message['body'][] = t('Name: @name','Email: @email', array('@name' => $params['username'], '@email' => $params['mail'],'@login' => $params['logintime']));
+        break;
+    }
+}
+
+}
