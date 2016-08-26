@@ -1,0 +1,13 @@
+<?php
+/*
+
+
+* Set beginning and end dates, retrieve posts from database
+ * saved in that time period.
+
+*/
+function dbmodule_contents()
+{
+$today=getdate();
+	
+}

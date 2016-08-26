@@ -1,0 +1,39 @@
+<?php
+/**
+ * implenting hook_help()
+ */
+function first_help($path,$args)
+{
+  switch ($path) {
+    case 'admin/help#first':
+        
+      return t('help for demo module');
+  }
+}
+/**
+ * implenting hook_block_info()
+ */
+function first_block_info()
+{
+  $content['module_list']=array(
+    'info'=>t('this block shows list of all enalbled module'),
+    'cache'=>DRUPAL_NO_CACHE,
+  );
+  return $content;
+}
+
+/**
+ * implemnting block view()
+ */
+function first_block_view($delta){
+  
+  $block=array();
+  switch ($delta) {
+    case 'module_list':
+        $block['subject'] = t('enabled modules');
+        $block['content'] = '<p>heloo this the first module<p>';
+        break;
+  }
+  
+  return $block;
+}

@@ -1,0 +1,35 @@
+<?php
+/*
+ * 
+ * 
+ * 
+ * hiiiii
+ * 
+ */
+
+function forma_menu()
+{
+  $items=array();
+  $items['form/funcake']=array(
+    'title'=>'CAKE or PIE',
+    'page callback'=>'drupal_get_form',
+   'page arguments' =>array('form_fun_form1'),
+    'access callback'=>TRUE,
+    'access_arguments'=>array('access content'),
+    'file' =>'forma_fun_cake.inc',
+    'type' => MENU_NORMAL_ITEM,    
+    
+  );
+  
+  $items['form/states']=array(
+    'title'=>'dynamic form',
+    'page callback'=>'drupal_get_form',
+    'page arguments'=>array('form_states'),
+   'access callbackck'=>TRUE,
+    'access arguments'=>array('access content'),
+    'file'=>'forma_states_form.inc',
+    'type'=>MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
