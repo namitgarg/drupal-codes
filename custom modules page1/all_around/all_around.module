@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Adds Views plugins for All Around Slider
+ */
+
+/**
+ * Implements hook_views_api().
+ */
+function all_around_views_api() {
+  return array(
+    'api' => 3,
+  );
+}
+
+function all_around_init(){
+  drupal_add_js('sites/all/modules/custom/all_around/libraries/js/jquery.content_slider.min.js');
+  drupal_add_js('sites/all/modules/custom/all_around/libraries/js/additional_content.js');
+  drupal_add_css('sites/all/modules/custom/all_around/libraries/css/content_slider_style.css');
+}

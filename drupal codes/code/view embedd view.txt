@@ -1,0 +1,3 @@
+
+<div class="review-text"><?php print views_embed_view('review_for_front_page', $display_id = 'block') ;?>
+s

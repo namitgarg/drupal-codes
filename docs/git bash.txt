@@ -1,7 +1,0 @@
-First open page1.pkk into puty gen
-Then go tot conversion export to ssh
-eval $(ssh-agent -s)
-ssh-keygen
-
-ssh-add "C:\Users\namit.garg\.ssh\id_rsa\acquia"
-ssh-add "C:\Users\MyName\.ssh\acquia"

@@ -1,0 +1,4 @@
+https://drupalize.me/videos/create-module-route-and-controller?p=2486
+https://docs.acquia.com/articles/building-drupal-8-modules
+http://getlevelten.com/blog/ian-whitcomb/drupal-8-module-development-part-1-getting-started
+https://www.lullabot.com/articles/what-happened-to-hook_menu-in-drupal-8

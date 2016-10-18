@@ -1,0 +1,7 @@
+name = All Around Views Style
+description = Adds a Views style plugin for All Around Slider
+core = 7.x
+package = custom
+files[] = all_around.module
+files[] = all_around.views.inc
+files[] = allaround_plugin_style.inc
