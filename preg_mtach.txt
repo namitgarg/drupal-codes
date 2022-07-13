@@ -1,20 +1,402 @@
-Difference between preg_match and preg_match_all
-preg_match stops looking after the first match. preg_match_all, on the other hand, continues to look until it finishes processing the entire string. Once match is found, it uses the remainder of the string to try and apply another match
+/**
+ * @file
+ * Defines Javascript behaviors for the module.
+ */
 
-http://www.w3schools.com/php/php_form_url_email.asp
+(function ($, Drupal) {
 
-
-To perform insensitive search exact match
-preg_match("/\b$searchword\b/i", $match_field, $matches);
-to perform match exact word
-  preg_match("/\b$searchword\b/", $match_field, $matches);
+  $(document).ready(function () {
+    selectConvert();
+    SubmitValidation();
+    requiredValidation();
+  });
+  $(document).ajaxComplete(function () {
+    selectConvert();
+    SubmitValidation();
+    requiredValidation();
     
-  if(empty($matches))
-  {
+    /** After submit take user to message **/
+    var headerHeight = $(".sticky-header").height();
+    $('html, body').animate({
+          scrollTop: $(".webform-submission-contact-form").offset().top - headerHeight
+        }, 500);
+  });
+  function selectConvert() {
+    $('form.webform-submission-contact-form select[data-drupal-selector="edit-user-type"]').select2({
+      minimumResultsForSearch: Infinity,
+      width: '100%',
+      dropdownParent: $('form.webform-submission-contact-form .form-item-user-type')
+    });
+
+    $('form.webform-submission-contact-form select[data-drupal-selector="edit-credentials"]').select2({
+      minimumResultsForSearch: Infinity,
+      width: '100%',
+      dropdownParent: $('form.webform-submission-contact-form .form-item-credentials')
+    });
+    $('form.webform-submission-contact-form select[data-drupal-selector="edit-inquiry-type"]').select2({
+      minimumResultsForSearch: Infinity,
+      width: '100%',
+      dropdownParent: $('form.webform-submission-contact-form .form-item-inquiry-type')
+    });
+    $('form.webform-submission-contact-form select[data-drupal-selector="edit-facility-type"]').select2({
+      minimumResultsForSearch: Infinity,
+      width: '100%',
+      dropdownParent: $('form.webform-submission-contact-form .form-item-facility-type')
+    });
+    $('form.webform-submission-contact-form select[data-drupal-selector="edit-specialty"]').select2({
+      minimumResultsForSearch: Infinity,
+      width: '100%',
+      dropdownParent: $('form.webform-submission-contact-form .form-item-specialty')
+    });
+
+    $('form.webform-submission-contact-form select[data-drupal-selector="edit-state-region"]').select2({
+      minimumResultsForSearch: Infinity,
+      width: '100%',
+      dropdownParent: $('form.webform-submission-contact-form .form-item-state-region')
+    });
+    $('form.webform-submission-contact-form select[data-drupal-selector="edit-hear-aboutus"]').select2({
+      minimumResultsForSearch: Infinity,
+      width: '100%',
+      dropdownParent: $('form.webform-submission-contact-form .form-item-hear-aboutus')
+    });
   }
-  
-  
-  
-  
-  Replace
-        $replace_result = preg_replace("/\b$searchword\b/i", $replaceword, $meta_list);
+
+
+
+  function requiredValidation() {
+    if ($('form.webform-submission-contact-form').hasClass('error'))
+    {
+      $('input[data-drupal-selector="edit-first-name"]').on('keyup', function (e) {
+        nameFieldRequiredValidation('input[data-drupal-selector="edit-first-name"]', '.form-item-first-name', 'first name');
+      });
+      $('input[data-drupal-selector="edit-last-name"]').on('keyup', function (e) {
+        nameFieldRequiredValidation('input[data-drupal-selector="edit-last-name"]', '.form-item-last-name', 'last name');
+      });
+      $('input[data-drupal-selector="edit-email"]').on('keyup', function (e) {
+        emailValidation('input[data-drupal-selector="edit-email"]', '.form-item-email');
+      });
+//      $('input[data-drupal-selector="edit-city"]').on('keyup', function (e) {
+//        nameFieldRequiredValidation('input[data-drupal-selector="edit-city"]', '.form-item-city', 'city');
+//      });
+      $('input[data-drupal-selector="edit-zip-code"]').on('keyup', function (e) {
+        zipValidation('input[data-drupal-selector="edit-zip-code"]', '.form-item-zip-code', 'ZIP code.', 5, 5);
+      });
+      $('input[data-drupal-selector="edit-phone-number"]').on('keyup', function (e) {
+        numberValidation('input[data-drupal-selector="edit-phone-number"]', '.form-item-phone-number', 'phone number.', 10, 20);
+      });
+      $('textarea[data-drupal-selector="edit-message"]').on('keyup', function (e) {
+        textAreaRequiredValidation('textarea[data-drupal-selector="edit-message"]', '.form-item-message', 'Please enter message.')
+      });
+      $('select[data-drupal-selector="edit-user-type"]').on('select2:select select2:unselect', function (e) {
+        singleSelectValidation('select[data-drupal-selector="edit-user-type"]', '.form-item-user-type', 'Please select user type.');
+      });
+
+      $('select[data-drupal-selector="edit-inquiry-type"]').on('select2:select select2:unselect', function (e) {
+        singleSelectValidation('select[data-drupal-selector="edit-inquiry-type"]', '.form-item-inquiry-type', 'Please select inquiry type.');
+      });
+
+
+      $('select[data-drupal-selector="edit-credentials"]').on('select2:select select2:unselect', function (e) {
+        singleSelectValidation('select[data-drupal-selector="edit-credentials"]', '.form-item-credentials', 'Please select credentials.');
+      });
+
+      $('select[data-drupal-selector="edit-state-region"]').on('select2:select select2:unselect', function (e) {
+        singleSelectValidation('select[data-drupal-selector="edit-state-region"]', '.form-item-state-region', 'Please select state/region.');
+      });
+      $('select[data-drupal-selector="edit-specialty"]').on('select2:select select2:unselect', function (e) {
+        specialtyValidation('select[data-drupal-selector="edit-specialty"]', '.form-item-specialty', 'Please select specialty.');
+      });
+
+      $('input[data-drupal-selector="edit-organization-practice-name"]').on('keyup', function (e) {
+        OrganizationValidation('input[data-drupal-selector="edit-organization-practice-name"]', '.form-item-organization-practice-name', 'Organization / Practice Name');
+      });
+    }
+
+  }
+
+
+
+  /*
+   * Required validation for individual fields.
+   */
+  function fieldRequiredValidation(inputIdSelector, formItemClass, errorMessage) {
+
+    if ($(inputIdSelector).val() == '')
+    {
+      if ($(formItemClass + ' label.error').length < 1)
+      {
+        $(inputIdSelector).before('<label class="error">' + errorMessage + '</label>');
+      } else {
+        $(formItemClass + ' label.error').text(errorMessage);
+      }
+      $(formItemClass + ' label.error').css('display', 'inline-block');
+      $(formItemClass).addClass('error has-error');
+    } else
+    {
+      $(formItemClass + ' label.error').css('display', 'none');
+      $(formItemClass).removeClass('error has-error');
+    }
+  }
+
+  /*
+   * Required validation for Name fields.
+   */
+  function nameFieldRequiredValidation(inputIdSelector, formItemClass, errorMessage) {
+    var nameRegex = /^[a-zA-Z0-9'. ]{0,20}$/;
+    var nameCheck = nameRegex.test($(inputIdSelector).val());
+    if ($(inputIdSelector).val() == '')
+    {
+      if ($(formItemClass + ' label.error').length < 1)
+      {
+        $(inputIdSelector).before('<label class="error">Please enter ' + errorMessage + '.</label>');
+      } else {
+        $(formItemClass + ' label.error').text('Please enter ' + errorMessage + '.');
+      }
+      $(formItemClass + ' label.error').css('display', 'inline-block');
+      $(formItemClass).addClass('error has-error');
+    } else
+    {
+      if (!nameCheck) {
+        if ($(formItemClass + ' label.error').length < 1)
+        {
+          $(inputIdSelector).before('<label class="error">Please enter valid ' + errorMessage + '.</label>');
+        } else {
+          $(formItemClass + ' label.error').text('Please enter valid ' + errorMessage + '.');
+        }
+        $(formItemClass + ' label.error').css('display', 'inline-block');
+        $(formItemClass).addClass('error has-error');
+      } else {
+        $(formItemClass + ' label.error').css('display', 'none');
+        $(formItemClass).removeClass('error has-error');
+      }
+
+    }
+  }
+
+  function singleSelectValidation(inputIdSelector, formItemClass, errorMessage) {
+    if (!$(inputIdSelector).val() || $(inputIdSelector).val() == '0' || $(inputIdSelector).val() == '_none') {
+      if ($(formItemClass + ' label.error').length < 1) {
+        $(inputIdSelector).closest('.select-wrapper').before('<label class="error">' + errorMessage + '</label>')
+      } else {
+        $(formItemClass + ' label.error').text(errorMessage);
+      }
+      $(formItemClass + ' label.error').css('display', 'inline-block');
+      $(formItemClass).addClass('error has-error');
+    } else {
+      $(formItemClass + ' label.error').css('display', 'none');
+      $(formItemClass).removeClass('error has-error');
+    }
+  }
+
+
+  function specialtyValidation(inputIdSelector, formItemClass, errorMessage) {
+    var userType = $('select[data-drupal-selector="edit-user-type"]').val();
+    if (userType == 'physician') {
+      if (!$(inputIdSelector).val() || $(inputIdSelector).val() == '0' || $(inputIdSelector).val() == '_none') {
+        if ($(formItemClass + ' label.error').length < 1) {
+          $(inputIdSelector).closest('.select-wrapper').before('<label class="error">' + errorMessage + '</label>')
+        } else {
+          $(formItemClass + ' label.error').text(errorMessage);
+        }
+        $(formItemClass + ' label.error').css('display', 'inline-block');
+        $(formItemClass).addClass('error has-error');
+      } else {
+        $(formItemClass + ' label.error').css('display', 'none');
+        $(formItemClass).removeClass('error has-error');
+      }
+    } else {
+      $(formItemClass + ' label.error').css('display', 'none');
+      $(formItemClass).removeClass('error has-error');
+    }
+  }
+
+  function textAreaRequiredValidation(inputIdSelector, formItemClass, errorMessage) {
+    if ($(inputIdSelector).val().trim() == '') {
+      if ($(formItemClass + ' label.error').length < 1) {
+        $(inputIdSelector).before('<label class="error">' + errorMessage + '</label>');
+      } else {
+        $(formItemClass + ' label.error').text(errorMessage);
+      }
+      $(formItemClass + ' label.error').css('display', 'inline-block');
+      $(formItemClass).addClass('error has-error');
+    } else {
+      $(formItemClass + ' label.error').css('display', 'none');
+      $(formItemClass).removeClass('error has-error');
+    }
+
+  }
+
+  function OrganizationValidation(inputIdSelector, formItemClass, errorMessage) {
+    var nameRegex = /^[a-zA-Z0-9'. ]{0,20}$/;
+    var nameCheck = nameRegex.test($(inputIdSelector).val());
+    var userType = $('select[data-drupal-selector="edit-user-type"]').val();
+    if (userType == 'physician' || userType == 'healthcare_professional' || userType == 'other') {
+      if ($(inputIdSelector).val() == '')
+      {
+        if ($(formItemClass + ' label.error').length < 1)
+        {
+          $(inputIdSelector).before('<label class="error">Please enter ' + errorMessage + '.</label>');
+        } else {
+          $(formItemClass + ' label.error').text('Please enter ' + errorMessage + '.');
+        }
+        $(formItemClass + ' label.error').css('display', 'inline-block');
+        $(formItemClass).addClass('error has-error');
+      } else
+      {
+        if (!nameCheck) {
+          if ($(formItemClass + ' label.error').length < 1)
+          {
+            $(inputIdSelector).before('<label class="error">Please enter valid ' + errorMessage + '.</label>');
+          } else {
+            $(formItemClass + ' label.error').text('Please enter valid ' + errorMessage + '.');
+          }
+          $(formItemClass + ' label.error').css('display', 'inline-block');
+          $(formItemClass).addClass('error has-error');
+        } else {
+          $(formItemClass + ' label.error').css('display', 'none');
+          $(formItemClass).removeClass('error has-error');
+        }
+
+      }
+    } else {
+      $(formItemClass + ' label.error').css('display', 'none');
+      $(formItemClass).removeClass('error has-error');
+    }
+
+  }
+
+
+  function SubmitValidation() {
+    $('form.webform-submission-contact-form button[data-drupal-selector="edit-custom-submit"]').on('click', function (e) {
+      nameFieldRequiredValidation('input[data-drupal-selector="edit-first-name"]', '.form-item-first-name', 'first name');
+      nameFieldRequiredValidation('input[data-drupal-selector="edit-last-name"]', '.form-item-last-name', 'last name');
+      emailValidation('input[data-drupal-selector="edit-email"]', '.form-item-email');
+//      nameFieldRequiredValidation('input[data-drupal-selector="edit-city"]', '.form-item-city', 'city');
+      numberValidation('input[data-drupal-selector="edit-phone-number"]', '.form-item-phone-number', 'phone number.', 10, 20);
+      zipValidation('input[data-drupal-selector="edit-zip-code"]', '.form-item-zip-code', 'ZIP code.', 5, 5);
+      singleSelectValidation('select[data-drupal-selector="edit-user-type"]', '.form-item-user-type', 'Please select user type.');
+      singleSelectValidation('select[data-drupal-selector="edit-inquiry-type"]', '.form-item-inquiry-type', 'Please select inquiry type.');
+      singleSelectValidation('select[data-drupal-selector="edit-state-region"]', '.form-item-state-region', 'Please select state/region.');
+      singleSelectValidation('select[data-drupal-selector="edit-credentials"]', '.form-item-credentials', 'Please select credentials.');
+      textAreaRequiredValidation('textarea[data-drupal-selector="edit-message"]', '.form-item-message', 'Please enter message.')
+      OrganizationValidation('input[data-drupal-selector="edit-organization-practice-name"]', '.form-item-organization-practice-name', 'Organization / Practice Name');
+      specialtyValidation('select[data-drupal-selector="edit-specialty"]', '.form-item-specialty', 'Please select specialty.');
+      if (($('form.webform-submission-contact-form .form-item.error').length >= 1)) {
+        var headerHeight = $(".sticky-header").height(); // Get fixed header height
+        $('form.webform-submission-contact-form').addClass('error');
+        e.preventDefault();
+        requiredValidation();
+        $('html, body').animate({
+          scrollTop: $("form.webform-submission-contact-form .form-item.error").offset().top - headerHeight
+        }, 1000);
+        $('.innovation-contact-section .innovation-contact .d-block').addClass('innovation-error');
+      } else {
+        e.preventDefault();
+        $('form.webform-submission-contact-form').removeClass('error');
+        $('.webform-button--submit').trigger('click');
+        $('.innovation-contact-section .innovation-contact .d-block').removeClass('innovation-error');
+      }
+
+    });
+  }
+
+
+  function numberValidation(inputIdSelector, formItemClass, fieldLabel, minLength, maxLength) {
+    var isnum = /\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{4})/;
+    if ($(inputIdSelector).val().length > 0) {
+      if (($(inputIdSelector).val().length < minLength || $(inputIdSelector).val().length > maxLength || (!isnum))) {
+        if ($(formItemClass + ' label.error').length < 1)
+        {
+          $(inputIdSelector).before('<label class="error">Please enter valid ' + fieldLabel + '</label>');
+        } else {
+          $(formItemClass + ' label.error').text('Please enter valid ' + fieldLabel);
+        }
+        $(formItemClass + ' label.error').css('display', 'inline-block');
+        $(formItemClass).addClass('error has-error');
+      } else
+      {
+        $(formItemClass + ' label.error').css('display', 'none');
+        $(formItemClass).removeClass('error has-error');
+      }
+    }
+// else if ($(inputIdSelector).val().length == 0) {
+//   if ($(formItemClass + ' label.error').length < 1)
+//   {
+//     $(inputIdSelector).before('<label class="error">Please enter your ' + fieldLabel + '</label>');
+//   } else {
+//     $(formItemClass + ' label.error').text('Please enter your ' + fieldLabel);
+//   }
+//   $(formItemClass + ' label.error').css('display', 'inline-block');
+//   $(formItemClass).addClass('error has-error');
+// }
+
+  }
+
+
+  function zipValidation(inputIdSelector, formItemClass, fieldLabel, minLength, maxLength) {
+    var isnum = /^\d+$/.test($(inputIdSelector).val());
+    if ($(inputIdSelector).val().length > 0) {
+      if (($(inputIdSelector).val().length < minLength || $(inputIdSelector).val().length > maxLength || (!isnum))) {
+        if ($(formItemClass + ' label.error').length < 1)
+        {
+          $(inputIdSelector).before('<label class="error">Please enter valid ' + fieldLabel + '</label>');
+        } else {
+          $(formItemClass + ' label.error').text('Please enter valid ' + fieldLabel);
+        }
+        $(formItemClass + ' label.error').css('display', 'inline-block');
+        $(formItemClass).addClass('error has-error');
+      } else
+      {
+        $(formItemClass + ' label.error').css('display', 'none');
+        $(formItemClass).removeClass('error has-error');
+      }
+    } else if ($(inputIdSelector).val().length == 0) {
+      if ($(formItemClass + ' label.error').length < 1)
+      {
+        $(inputIdSelector).before('<label class="error">Please enter your ' + fieldLabel + '</label>');
+      } else {
+        $(formItemClass + ' label.error').text('Please enter your ' + fieldLabel);
+      }
+      $(formItemClass + ' label.error').css('display', 'inline-block');
+      $(formItemClass).addClass('error has-error');
+    }
+
+  }
+  /*
+   * Validation function to verify the email format.
+   */
+  function emailValidation(inputIdSelector, formItemClass)
+  {
+    var filter = /^[\w\-\.\+]+\@[a-zA-Z0-9\.\-]+\.[a-zA-z0-9]{1,10}$/;
+    var emailCheck = filter.test($(inputIdSelector).val());
+    if ($(inputIdSelector).val().length > 0)
+    {
+      if (!emailCheck)
+      {
+        if ($(formItemClass + ' label.error').length < 1)
+        {
+          $(inputIdSelector).before('<label class="error">Please enter valid email address.</label>');
+        } else {
+          $(formItemClass + ' label.error').text('Please enter valid email address.');
+        }
+        $(formItemClass + ' label.error').css('display', 'inline-block');
+        $(formItemClass).addClass('error has-error');
+      } else {
+        $(formItemClass + ' label.error').css('display', 'none');
+        $(formItemClass).removeClass('error has-error');
+      }
+
+    } else
+    {
+      if ($(formItemClass + ' label.error').length < 1)
+      {
+        $(inputIdSelector).before('<label class="error">Please enter your email address.</label>');
+      } else {
+        $(formItemClass + ' label.error').text('Please enter your email address.');
+      }
+      $(formItemClass + ' label.error').css('display', 'inline-block');
+      $(formItemClass).addClass('error has-error');
+    }
+
+  }
+})(jQuery, Drupal);
